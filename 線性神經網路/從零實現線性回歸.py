@@ -1,3 +1,6 @@
+# "這裡實現過程分別為:
+# 生成資料集、讀取資料集、設置模型參數、定義模型、定義誤差涵式、定義優化算法、訓練"
+
 import matplotlib # 注意这个也要import一次
 import matplotlib.pyplot as plt
 import random
@@ -14,7 +17,7 @@ def synthetic_data(w, b, num_examples):
     return X, y.reshape((-1, 1)) # 這邊如果不reshape的話y是橫的
 true_w = torch.tensor([2, -3.4])
 true_b = 4.2
-print(f"true_w {true_w}, true_b {true_b}\n")
+
 features, labels = synthetic_data(true_w, true_b, 1000)
 # print('features:',features[0],'\nlabels:',labels[0])
 # plt.scatter(features[:, 1].detach().numpy(), labels.detach().numpy(),1)
@@ -70,9 +73,6 @@ for epoch in range(num_epochs):
         sgd([w, b], lr, batch_size) # 使用參數的梯度更新參數
     with torch.no_grad():
         train_l = loss(net(features,w,b), labels)
-        print(w ,b)
         print(f"epoch {epoch + 1}, loss {float(train_l.mean()):f}")
-
-
-
-
+        print(f'w的估計誤差: {true_w - w.reshape(true_w.shape)}')
+        print(f'b的估計誤差: {true_b - b}')
