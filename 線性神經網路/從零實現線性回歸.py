@@ -7,7 +7,7 @@ import random
 import torch
 from d2l import torch as d2l
 
-# "生成資料集"
+# 1.生成資料集
 # 生成1000個樣本的資料集，每個樣本從標準正態分布抽樣兩個特徵。合成一個數據集X(大小1000x2)
 def synthetic_data(w, b, num_examples):
     #"生成y = Wx + b噪聲"
@@ -25,7 +25,7 @@ features, labels = synthetic_data(true_w, true_b, 1000)
 # plt.grid(True)
 # plt.show()
 
-# "讀取資料集"
+# 2.讀取資料集
 def data_iter(batch_size, features, labels):
     num_examples = len(features) 
     indices = list(range(num_examples)) # 生成從0到num_example-1的索引
@@ -40,26 +40,26 @@ batch_size = 10
 #     print(X,'\n',y)
 #     break
 
-# "初始化模型參數w以及b" 注意這邊的w、b是預測值
+# 3.初始化模型參數w以及b 
 w = torch.normal(0, 0.01, size=(2,1), requires_grad=True)
-b = torch.zeros(1, requires_grad=True)
+b = torch.zeros(1, requires_grad=True)# 注意這邊的w、b是預測值
 
-# "定義模型"
+# 4.定義模型
 def linreg(X, w, b): # 線性回歸模型獲得預測y_hat
     return torch.matmul(X, w) + b
 
-# "定義損失函數"
+# 5.定義損失函數
 def square_loss(y_hat, y): # 均方損失
     return (y_hat - y.reshape(y_hat.shape)) ** 2 / 2
 
-# "定義優化算法"
+# 6.定義優化算法
 def sgd(params, lr, batch_size): #傳入分別為參數集合、學習率、批量大小
     with torch.no_grad(): # torch.no_grad() wrap的語句將不被track到梯度計算過程中
         for param in params:
             param -= lr * param.grad / batch_size # 為了使batch_size不影響步長所以有除法
             param.grad.zero_()
 
-# "開始訓練!"
+# 7.訓練
 # 設置超參數
 lr = 0.03
 num_epochs = 3 # 代表迭代週期，一個迭代週期用data_iter走過整個數據集
