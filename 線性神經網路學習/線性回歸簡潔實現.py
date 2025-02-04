@@ -1,3 +1,5 @@
+# 在前面我們自己設計了數據迭代器、損失涵式、優化器、神經網路層，但其實這些都有現成組件
+
 import numpy as np
 import torch
 from torch.utils import data
@@ -10,12 +12,14 @@ true_b = 4.2
 features, labels = d2l.synthetic_data(true_w, true_b, 1000)
 
 # 2.讀取資料集
+# 構造一個PyTorch數據迭代器
 def load_array(data_arrays, batch_size, is_train = True): # 將feature&label合起來作為參數data_array傳入
     dataset = data.TensorDataset(*data_arrays)
     return data.DataLoader(dataset, batch_size, shuffle= is_train)
 
 batch_size = 10
 data_iter = load_array((features,labels),batch_size)
+# print(next(iter(data_iter))) # 與前者不同這邊以Python內建iter代替for next獲取迭代起第一項
 
 # 3.定義模型
 net = nn.Sequential(nn.Linear(2, 1)) # 輸入features形狀為2 輸出特徵形狀為1
